@@ -268,6 +268,21 @@ public class SDVariable extends DifferentialFunction implements Serializable {
     }
 
 
+    /**
+     * Negate op
+     * @return Negated variable
+     */
+    public SDVariable neg(){
+        return f().neg(this);
+    }
+
+    /**
+     * Negate op
+     * @return Negated variable
+     */
+    public SDVariable neg(String name){
+        return sameDiff.neg(name, this);
+    }
 
     //scalars
 
