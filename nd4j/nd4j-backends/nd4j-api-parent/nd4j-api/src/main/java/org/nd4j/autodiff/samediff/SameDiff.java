@@ -569,6 +569,7 @@ public class SameDiff {
         variableNameToArr.put(varName, arr);
     }
 
+
     /**
      * Get the shape for the given vertex id.
      * Note that if an array is defined, it will use that shape instead.
@@ -2503,6 +2504,15 @@ public class SameDiff {
 
     public SDVariable cross(String name, SDVariable a, SDVariable b) {
         SDVariable ret = f().cross(a, b);
+        return updateVariableNameAndReference(ret, name);
+    }
+
+    public SDVariable gather(SDVariable df, SDVariable indices, int axis){
+        return gather(null, df, indices, axis);
+    }
+
+    public SDVariable gather(String name, SDVariable df, SDVariable indices, int axis){
+        SDVariable ret = f().gather(df, indices, axis);
         return updateVariableNameAndReference(ret, name);
     }
 
@@ -6130,8 +6140,8 @@ public class SameDiff {
 
                         if (differentialFunction.outputVariables()[0].getArr() == null) {
                             val var = differentialFunction.outputVariables()[0];
-                            putArrayForVarName(var.getVarName(), accumulation.z());
-                            putShapeForVarName(var.getVarName(), accumulation.z().shape());
+                            updateVariable(var.getVarName(), accumulation.z());
+                            updateShapeForVarName(var.getVarName(), accumulation.z().shape());
                         }
                     } else if (differentialFunction instanceof BroadcastOp) {
                         BroadcastOp broadcastOp = (BroadcastOp) differentialFunction;
